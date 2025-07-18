@@ -1,0 +1,26 @@
+.list-skills {
+  list-style-type: none;
+  display: flex;
+  margin: 40px;
+}
+
+.para-skills {
+  color: white;
+  font-family: 'Roboto';
+  margin-left: 10px;
+  font-weight: 500;
+}
+.image-size {
+  height: 50px;
+  width: 50px;
+}
+
+@media screen and (max-width: 576px) {
+  .list-skills {
+    margin: 20px;
+  }
+  .image-size {
+    height: 60px;
+    width: 60px;
+  }
+}

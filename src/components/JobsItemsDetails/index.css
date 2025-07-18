@@ -1,0 +1,228 @@
+.jobsdetails-container {
+  height: 2500px;
+  background-color: black;
+  background-size: cover;
+  border: 2px solid green;
+}
+.container-align {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.jobcontainer {
+  height: 2300px;
+  width: 1000px;
+  background-color: #272727;
+  border: 1px solid yellow;
+  /*background-color: gray;*/
+  margin: 30px;
+}
+.logo-section {
+  height: 90px;
+  width: 900px;
+  border: 1px solid;
+  margin: 20px;
+  padding: 10px;
+  display: flex;
+}
+.size-logo {
+  height: 60px;
+  width: 60px;
+}
+
+.heading-color {
+  color: aliceblue;
+  font-family: 'Roboto';
+  margin-left: 18px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.location-section {
+  height: 90px;
+  width: 900px;
+  border: 1px solid;
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.location-color {
+  font-family: 'Roboto';
+  color: white;
+}
+.color {
+  background-color: transparent;
+  color: white;
+  margin-right: 10px;
+}
+.internship {
+  font-family: 'Roboto';
+  color: white;
+  margin-left: 130px;
+}
+.package {
+  font-family: 'Roboto';
+  color: white;
+  font-size: 20px;
+}
+.line-job {
+  width: 680px;
+}
+.des-section {
+  height: 190px;
+  width: 900px;
+  border: 1px solid;
+  margin: 20px;
+  padding: 10px;
+}
+.des-align {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.visitlink {
+  margin-top: 20px;
+}
+.skill-section {
+  /* height: 340px;*/
+  width: 900px;
+  margin: 20px;
+  border: 1px solid;
+}
+.skills-head {
+  color: white;
+  font-family: 'Roboto';
+  margin: 20px;
+}
+.skill-unorder-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.life-atcompany {
+  height: 350px;
+  width: 900px;
+  border: 1px solid;
+  margin: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.arrangecompany {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.life-para {
+  color: white;
+  font-family: 'Roboto';
+  font-weight: 200;
+  max-width: 400px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.companyimagesize {
+  height: 220px;
+  width: 500px;
+  margin: 20px;
+}
+.unorder-similar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.similarjobs-container {
+  height: 1000px;
+  width: 900px;
+  border: 1px solid;
+  margin: 20px;
+}
+
+@media screen and (max-width: 576px) {
+  .jobsdetails-container {
+    height: 5000px;
+    background-color: black;
+    background-size: cover;
+    border: 2px solid green;
+  }
+  .jobcontainer {
+    height: 4100px;
+    width: 450px;
+  }
+  .logo-section {
+    height: 100px;
+    width: 400px;
+  }
+  .location-section {
+    height: 100px;
+    width: 400px;
+    margin: 20px;
+    padding: 10px;
+    justify-content: space-between;
+  }
+  .color {
+    margin-right: 10px;
+  }
+  .internship {
+    font-family: 'Roboto';
+    color: white;
+    margin-left: 30px;
+  }
+  .line-job {
+    width: 400px;
+  }
+  .des-section {
+    height: 390px;
+    width: 400px;
+    border: 1px solid;
+    margin: 20px;
+    padding: 10px;
+  }
+  .skill-section {
+    /* height: 340px;*/
+    height: 500px;
+    width: 400px;
+    margin: 20px;
+    border: 1px solid;
+  }
+  .skill-unorder-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .life-atcompany {
+    height: 650px;
+    width: 400px;
+    border: 1px solid;
+    margin: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .arrangecompany {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .life-para {
+    margin-left: 10px;
+  }
+  .companyimagesize {
+    height: 220px;
+    width: 360px;
+    margin: 20px;
+  }
+  .unorder-similar {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .similarjobs-container {
+    height: 1500px;
+    width: 400px;
+    border: 1px solid;
+    margin: 20px;
+  }
+}

@@ -1,0 +1,22 @@
+.color-label {
+  color: white;
+  font-family: 'Roboto';
+}
+.list {
+  list-style-type: none;
+  margin: 10px;
+  margin-right: 210px;
+}
+
+.radiosize {
+  height: 15px;
+  width: 15px;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 576px) {
+  .list {
+    margin-right: 100px;
+  }
+}

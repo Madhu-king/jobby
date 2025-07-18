@@ -1,0 +1,13 @@
+.label-color {
+  color: white;
+  font-family: 'Roboto';
+}
+.list {
+  margin: 10px;
+}
+
+.checkbox-size {
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+}
