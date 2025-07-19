@@ -58,16 +58,15 @@
   .nav-cont {
     height: 130px;
   }
-  
+
   .para-list {
     margin-right: 0px;
     font-size: 10px;
   }
-  
 }
 
 @media screen and (min-width: 768px) {
-  .nav-cont{
+  .nav-cont {
     width: 100vw;
   }
 }

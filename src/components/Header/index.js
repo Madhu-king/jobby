@@ -8,7 +8,7 @@ const Header = props => {
   const logbtn = () => {
     const {history} = props
     console.log(history)
-    Cookies.remove('jt_token')
+    Cookies.remove('jwt_token')
     history.replace('/login')
   }
 

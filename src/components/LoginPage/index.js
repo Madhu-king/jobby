@@ -23,7 +23,9 @@ class LoginPage extends Component {
   }
 
   success = jwtToken => {
-    Cookies.set('jt_token', jwtToken, {expires: 30})
+    const {history} = this.props
+    Cookies.set('jwt_token', jwtToken, {expires: 30})
+    history.replace('/')
   }
 
   failure = err => {
@@ -58,7 +60,7 @@ class LoginPage extends Component {
   render() {
     const {showErrusernameMsg, username, password} = this.state
 
-    const gettoken = Cookies.get('jt_token')
+    const gettoken = Cookies.get('jwt_token')
     if (gettoken !== undefined) {
       return <Redirect to="/" />
     }
