@@ -6,7 +6,7 @@ import Header from '../Header'
 
 import './index.css'
 
-class HomePage extends Component {
+class Home extends Component {
   /* logbtn = () => {
     const {history} = this.props
     console.log(history)
@@ -51,4 +51,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage
+export default Home

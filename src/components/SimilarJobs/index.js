@@ -1,4 +1,5 @@
 import {IoBag, IoLocationOutline} from 'react-icons/io5'
+
 import {FaStar} from 'react-icons/fa'
 
 import './index.css'
@@ -6,6 +7,7 @@ import './index.css'
 const SimilarJobs = prop => {
   const {detailssimilar} = prop
   const {
+    id,
     title,
     rating,
     imageLogoUrl,
@@ -13,14 +15,14 @@ const SimilarJobs = prop => {
     location,
     jobDescription,
   } = detailssimilar
-  console.log(detailssimilar)
+  // console.log(detailssimilar)//
   return (
-    <li className="listsimilar">
+    <li className="listsimilar" key={id}>
       <div className="logo-section-SimilarJobs">
         <img
           src={imageLogoUrl}
           className="logo-size"
-          alt="job details company logo"
+          alt="similar job company logo"
         />
         <div className="cont">
           <h1 className="SimilarJobs-heading">{title}</h1>

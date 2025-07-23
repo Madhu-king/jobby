@@ -61,9 +61,17 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
-class JobsPage extends Component {
+const apiStatusConstantstwo = {
+  firstinitial: 'INITIAL',
+  firstsuccess: 'SUCCESS',
+  firstfailure: 'FAILURE',
+  firstinProgress: 'IN_PROGRESS',
+}
+
+class Jobs extends Component {
   state = {
     apiStatus: apiStatusConstants.initial,
+    apiStatusfirst: apiStatusConstantstwo.firstinitial,
     profiledata: {},
     /* authorizeuser: false, */
     usersearchinput: '',
@@ -75,6 +83,7 @@ class JobsPage extends Component {
 
   componentDidMount() {
     this.getprofile()
+    this.takejobresults()
   }
 
   failureview = () => (
@@ -123,7 +132,7 @@ class JobsPage extends Component {
       const resultprofiledata = await response.json()
       const c = this.sendformat(resultprofiledata.profile_details)
       // console.log(c)//
-      this.takejobresults()
+      // this.takejobresults()//
       this.setState({
         profiledata: c,
         /* authorizeuser: true, */
@@ -199,7 +208,7 @@ class JobsPage extends Component {
 
   takejobresults = async () => {
     const {usersearchinput} = this.state
-
+    this.setState({apiStatusfirst: apiStatusConstantstwo.firstinProgress})
     const token = Cookies.get('jwt_token')
     if (usersearchinput === '') {
       const apiurl = ' https://apis.ccbp.in/jobs'
@@ -221,14 +230,16 @@ class JobsPage extends Component {
 
         this.setState({
           showjobs: formatdata,
-          apiStatus: apiStatusConstants.success,
+          apiStatusfirst: apiStatusConstantstwo.firstsuccess,
         })
       } else {
-        this.setState({apiStatus: apiStatusConstants.failure})
+        this.setState({apiStatusfirst: apiStatusConstantstwo.firstfailure})
       }
 
       //  console.log(formatdata)//
     } else {
+      // this.setState({apiStatusfirst:apiStatusConstantstwo.firstinProgress})//
+
       const options = {
         method: 'GET',
         headers: {
@@ -240,11 +251,20 @@ class JobsPage extends Component {
         `https://apis.ccbp.in/jobs?search=${usersearchinput}`,
         options,
       )
-      const out = await response.json()
-      // console.log(out)//
-      const dataformat = out.jobs.map(eachjob => this.singlr(eachjob))
+      if (response.ok) {
+        const out = await response.json()
+        const dataformat = out.jobs.map(eachjob => this.singlr(eachjob))
+        this.setState({
+          showjobs: dataformat,
+          apiStatusfirst: apiStatusConstantstwo.firstsuccess,
+        })
+      } else {
+        this.setState({apiStatusfirst: apiStatusConstantstwo.firstfailure})
 
-      this.setState({showjobs: dataformat})
+        // this.rightsideshowjobs()//
+      }
+
+      // console.log(out)//
     }
   }
 
@@ -307,8 +327,8 @@ class JobsPage extends Component {
 
   // line304:33//
   rightsideshowjobs = () => {
-    const {apiStatus} = this.state
-    if (apiStatus === apiStatusConstants.success) {
+    const {apiStatusfirst} = this.state
+    if (apiStatusfirst === apiStatusConstantstwo.firstsuccess) {
       const {showjobs} = this.state
       return (
         <ul className="unorder">
@@ -318,10 +338,10 @@ class JobsPage extends Component {
         </ul>
       )
     }
-    if (apiStatus === apiStatusConstants.inProgress) {
+    if (apiStatusfirst === apiStatusConstantstwo.firstinProgress) {
       return this.loaderview()
     }
-    if (apiStatus === apiStatusConstants.failure) {
+    if (apiStatusfirst === apiStatusConstantstwo.firstfailure) {
       return this.failureviewrightsidejobs()
     }
     return undefined
@@ -434,4 +454,4 @@ class JobsPage extends Component {
   }
 }
 
-export default JobsPage
+export default Jobs

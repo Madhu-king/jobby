@@ -2,6 +2,8 @@ import {Component} from 'react'
 
 import {IoLocationOutline, IoBag} from 'react-icons/io5'
 
+import {FaStar} from 'react-icons/fa'
+
 import Cookies from 'js-cookie'
 
 import Header from '../Header'
@@ -19,13 +21,13 @@ import './index.css'
   inProgress: 'IN_PROGRESS',
 } */
 
-class JobsItemsDetails extends Component {
+class JobItemDetails extends Component {
   state = {
     jobdetails: {},
     skills: [],
     companylifedetails: {},
     similarjobs: [],
-    detailsview: false,
+    detailsview: true,
   }
 
   componentDidMount() {
@@ -33,7 +35,7 @@ class JobsItemsDetails extends Component {
   }
 
   dataformatdisplayui = data => ({
-    companyLogoUrl: data.company_logo_url,
+    companyLogUrl: data.company_logo_url,
     companyWebsiteUrl: data.company_website_url,
     id: data.id,
     employmentType: data.employment_type,
@@ -65,15 +67,25 @@ class JobsItemsDetails extends Component {
     jobDescription: each.job_description,
   })
 
+  requestfetchdata = () => {
+    this.getdetailsdata()
+  }
+
   failureview = () => (
-    <div>
+    <div className="failure-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/failure-img.png "
         alt="failure view"
       />
       <h1>Oops! Something Went Wrong</h1>
       <p>We cannot seem to find the page you are looking for</p>
-      <button type="button">Retry</button>
+      <button
+        type="button"
+        className="Retrybtn"
+        onClick={this.requestfetchdata}
+      >
+        Retry
+      </button>
     </div>
   )
 
@@ -103,7 +115,7 @@ class JobsItemsDetails extends Component {
       const formatteddata = this.dataformatdisplayui(c)
       const e = resultdetails.similar_jobs
       const similarjobsFormatted = e.map(each => this.similarjobsfun(each))
-      console.log(similarjobsFormatted)
+      // console.log(similarjobsFormatted)//
       // console.log(resultdetails.job_details)//
       const getskillsdata = c.skills
       const lifeatcomapny = c.life_at_company
@@ -120,11 +132,10 @@ class JobsItemsDetails extends Component {
         detailsview: true,
       })
     } else {
-      const {history} = this.props
-      Cookies.remove('jwt_token')
-      history.replace('/login')
-
       this.setState({detailsview: false})
+      /* const {history} = this.props
+      Cookies.remove('jwt_token')
+      history.replace('/login') */
     }
   }
 
@@ -136,10 +147,11 @@ class JobsItemsDetails extends Component {
       similarjobs,
       detailsview,
     } = this.state
+    console.log(jobdetails)
     const {description, imageUrl} = companylifedetails
     const {
       id,
-      companyLogoUrl,
+      companyLogUrl,
       title,
       rating,
       location,
@@ -151,19 +163,22 @@ class JobsItemsDetails extends Component {
     return (
       <div className="jobsdetails-container">
         <Header />
-        {detailsview && (
+        {detailsview ? (
           <div className="container-align">
-            <div className="jobcontainer" value={id}>
+            <div className="jobcontainer" key={id}>
               <div className="logo-section">
                 <img
-                  alt="website logo"
-                  src={companyLogoUrl}
+                  src={companyLogUrl}
+                  alt=" job details company logo"
                   className="size-logo"
                 />
 
                 <div>
                   <h1 className="heading-color">{title}</h1>
-                  <p className="heading-color">{rating}</p>
+                  <p className="heading-color">
+                    <FaStar color="yellow" />
+                    {rating}
+                  </p>
                 </div>
               </div>
 
@@ -194,7 +209,7 @@ class JobsItemsDetails extends Component {
                 <h1 className="skills-head">Skills </h1>
                 <ul className="skill-unorder-container">
                   {skills.map(each => (
-                    <SkillsShow eachdetails={each} key={each.id} />
+                    <SkillsShow key={each.id} eachdetails={each} />
                   ))}
                 </ul>
               </div>
@@ -219,10 +234,12 @@ class JobsItemsDetails extends Component {
               </div>
             </div>
           </div>
+        ) : (
+          <div>{this.failureview()}</div>
         )}
       </div>
     )
   }
 }
 
-export default JobsItemsDetails
+export default JobItemDetails

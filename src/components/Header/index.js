@@ -7,7 +7,7 @@ import './index.css'
 const Header = props => {
   const logbtn = () => {
     const {history} = props
-    console.log(history)
+    // console.log(history)//
     Cookies.remove('jwt_token')
     history.replace('/login')
   }

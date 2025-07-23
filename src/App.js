@@ -1,12 +1,12 @@
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
-import LoginPage from './components/LoginPage'
+import Login from './components/Login'
 
-import HomePage from './components/HomePage'
+import Home from './components/Home'
 
-import JobsPage from './components/JobsPage'
+import Jobs from './components/Jobs'
 
-import JobsItemsDetails from './components/JobsItemsDetails'
+import JobItemDetails from './components/JobItemDetails'
 
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -20,14 +20,10 @@ import './App.css'
 const App = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/login" component={LoginPage} />
-      <ProtectedRoute exact path="/" component={HomePage} />
-      <ProtectedRoute exact path="/jobs" component={JobsPage} />
-      <ProtectedRoute
-        exact
-        path="/jobdetails/:id"
-        component={JobsItemsDetails}
-      />
+      <Route exact path="/login" component={Login} />
+      <ProtectedRoute exact path="/" component={Home} />
+      <ProtectedRoute exact path="/jobs" component={Jobs} />
+      <ProtectedRoute exact path="/jobdetails/:id" component={JobItemDetails} />
       <Route path="/not-found" component={NotFound} />
     </Switch>
   </BrowserRouter>
