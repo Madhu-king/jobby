@@ -3,7 +3,7 @@ import './index.css'
 const SalaryRange = props => {
   const {details, getradiodata} = props
   const {salaryRangeId, label} = details
-  const labelvalue = label.slice(0, 6)
+  /* const labelvalue = label.slice(0, 6) */
   // console.log(labelvalue)//
 
   const sendradio = () => {

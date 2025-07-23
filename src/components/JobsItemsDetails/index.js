@@ -1,7 +1,5 @@
 import {Component} from 'react'
 
-import {Link} from 'react-router-dom'
-
 import {IoLocationOutline, IoBag} from 'react-icons/io5'
 
 import Cookies from 'js-cookie'
@@ -13,6 +11,13 @@ import SkillsShow from '../SkillsShow'
 import SimilarJobs from '../SimilarJobs'
 
 import './index.css'
+
+/* const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  inProgress: 'IN_PROGRESS',
+} */
 
 class JobsItemsDetails extends Component {
   state = {
@@ -77,17 +82,18 @@ class JobsItemsDetails extends Component {
     const {params} = match
     const {id} = params
     console.log(id)
-    const jwttoken = Cookies.get('jt_token')
+    const token = Cookies.get('jwt_token')
     const apiurl = `https://apis.ccbp.in/jobs/${id}`
 
     const options = {
       headers: {
-        Authorization: `Bearer ${jwttoken}`,
+        Authorization: `Bearer ${token}`,
       },
       method: 'GET',
     }
 
     const response = await fetch(apiurl, options)
+    console.log(response)
     if (response.ok) {
       const resultdetails = await response.json()
       // console.log(resultdetails.job_details)//
@@ -111,9 +117,14 @@ class JobsItemsDetails extends Component {
         skills: d,
         companylifedetails: lifecomapnyformatted,
         similarjobs: similarjobsFormatted,
+        detailsview: true,
       })
     } else {
-      this.setState({detailsview: true})
+      const {history} = this.props
+      Cookies.remove('jwt_token')
+      history.replace('/login')
+
+      this.setState({detailsview: false})
     }
   }
 
@@ -136,26 +147,18 @@ class JobsItemsDetails extends Component {
       packageSalary,
       jobDescription,
       companyWebsiteUrl,
-      company,
     } = jobdetails
-
-    console.log(company)
-    // console.log(companyLogoUrl)//
     return (
       <div className="jobsdetails-container">
         <Header />
-        {detailsview ? (
-          <div>
-            <p>no</p>
-          </div>
-        ) : (
+        {detailsview && (
           <div className="container-align">
-            <div className="jobcontainer">
+            <div className="jobcontainer" value={id}>
               <div className="logo-section">
                 <img
+                  alt="website logo"
                   src={companyLogoUrl}
                   className="size-logo"
-                  alt="website logo"
                 />
 
                 <div>
@@ -191,7 +194,7 @@ class JobsItemsDetails extends Component {
                 <h1 className="skills-head">Skills </h1>
                 <ul className="skill-unorder-container">
                   {skills.map(each => (
-                    <SkillsShow eachdetails={each} />
+                    <SkillsShow eachdetails={each} key={each.id} />
                   ))}
                 </ul>
               </div>

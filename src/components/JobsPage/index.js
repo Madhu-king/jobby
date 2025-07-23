@@ -1,5 +1,7 @@
 import {Component} from 'react'
-import {Link} from 'react-router-dom'
+
+import Loader from 'react-loader-spinner'
+
 import Cookies from 'js-cookie'
 
 import {BsSearch} from 'react-icons/bs'
@@ -52,13 +54,21 @@ const salaryRangesList = [
   },
 ]
 
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  inProgress: 'IN_PROGRESS',
+}
+
 class JobsPage extends Component {
   state = {
+    apiStatus: apiStatusConstants.initial,
     profiledata: {},
-    authorizeuser: false,
+    /* authorizeuser: false, */
     usersearchinput: '',
     showjobs: [],
-    salaryvalue: '',
+    /* salaryvalue: '', */
     checkboxdata: '',
     nojobs: false,
   }
@@ -75,28 +85,56 @@ class JobsPage extends Component {
     </div>
   )
 
+  failureviewrightsidejobs = () => (
+    <div className="nojobs-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
+        className="nojobs-size"
+        alt="no jobs"
+      />
+      <h1 className="headingemploye">No Jobs Found</h1>
+      <p className="failure-para">
+        We could not find any jobs. Try other filters
+      </p>
+    </div>
+  )
+
+  loaderview = () => (
+    <div className="loader-container" data-testid="loader">
+      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+    </div>
+  )
+
   getprofile = async () => {
-    const {authorizeuser} = this.state
-    const gettokenfromcookies = Cookies.get('jt_token')
-    if (gettokenfromcookies !== undefined) {
-      const apiurl = 'https://apis.ccbp.in/profile'
-      const options = {
-        method: 'GET',
-        headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhaHVsIiwicm9sZSI6IlBSSU1FX1VTRVIiLCJpYXQiOjE2MjMwNjU1MzJ9.D13s5wN3Oh59aa_qtXMo3Ec4wojOx0EZh8Xr5C5sRkU',
-        },
-      }
+    this.setState({apiStatus: apiStatusConstants.inProgress})
 
-      const response = await fetch(apiurl, options)
+    const gettokenfromcookies = Cookies.get('jwt_token')
+    /* if (gettokenfromcookies !== undefined) { */
+    const apiurl = 'https://apis.ccbp.in/profile'
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${gettokenfromcookies}`,
+      },
+    }
 
+    const response = await fetch(apiurl, options)
+    if (response.ok) {
       const resultprofiledata = await response.json()
       const c = this.sendformat(resultprofiledata.profile_details)
       // console.log(c)//
       this.takejobresults()
-      this.setState({profiledata: c, authorizeuser: true})
+      this.setState({
+        profiledata: c,
+        /* authorizeuser: true, */
+        apiStatus: apiStatusConstants.success,
+      })
     } else {
-      this.setState({authorizeuser: false, nojobs: true})
+      this.setState({
+        /* authorizeuser: false, */
+        nojobs: true,
+        apiStatus: apiStatusConstants.failure,
+      })
     }
   }
 
@@ -119,13 +157,13 @@ class JobsPage extends Component {
     // console.log(data)//
     this.setState({nojobs: false})
 
-    const {checkboxdata, usersearchinput} = this.state
+    const {usersearchinput} = this.state
+    const token = Cookies.get('jwt_token')
 
     const options = {
       method: 'GET',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhaHVsIiwicm9sZSI6IlBSSU1FX1VTRVIiLCJpYXQiOjE2MjMwNjU1MzJ9.D13s5wN3Oh59aa_qtXMo3Ec4wojOx0EZh8Xr5C5sRkU',
+        Authorization: `Bearer ${token}`,
       },
     }
 
@@ -162,36 +200,39 @@ class JobsPage extends Component {
   takejobresults = async () => {
     const {usersearchinput} = this.state
 
+    const token = Cookies.get('jwt_token')
     if (usersearchinput === '') {
       const apiurl = ' https://apis.ccbp.in/jobs'
 
       const options = {
         method: 'GET',
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhaHVsIiwicm9sZSI6IlBSSU1FX1VTRVIiLCJpYXQiOjE2MjMwNjU1MzJ9.D13s5wN3Oh59aa_qtXMo3Ec4wojOx0EZh8Xr5C5sRkU',
+          Authorization: `Bearer ${token}`,
         },
       }
 
       const response = await fetch(apiurl, options)
+      if (response.ok) {
+        const searchingresults = await response.json()
+        // console.log(searchingresults)//
+        const formatdata = searchingresults.jobs.map(eachjob =>
+          this.singlr(eachjob),
+        )
 
-      const searchingresults = await response.json()
-      // console.log(searchingresults)//
-      const formatdata = searchingresults.jobs.map(eachjob =>
-        this.singlr(eachjob),
-      )
+        this.setState({
+          showjobs: formatdata,
+          apiStatus: apiStatusConstants.success,
+        })
+      } else {
+        this.setState({apiStatus: apiStatusConstants.failure})
+      }
 
       //  console.log(formatdata)//
-
-      this.setState({showjobs: formatdata})
     } else {
-      const apiurl = ' https://apis.ccbp.in/jobs'
-
       const options = {
         method: 'GET',
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhaHVsIiwicm9sZSI6IlBSSU1FX1VTRVIiLCJpYXQiOjE2MjMwNjU1MzJ9.D13s5wN3Oh59aa_qtXMo3Ec4wojOx0EZh8Xr5C5sRkU',
+          Authorization: `Bearer ${token}`,
         },
       }
 
@@ -207,9 +248,9 @@ class JobsPage extends Component {
     }
   }
 
-  resutview = () => {
+  /*  resutview = () => {
     const {showjobs} = this.state
-  }
+  } */
 
   getradiodata = async salaryRangeId => {
     // console.log(salaryRangeId)//
@@ -217,13 +258,13 @@ class JobsPage extends Component {
     this.setState({nojobs: false})
 
     // this.takejobresults()//
-    const apiurl = ' https://apis.ccbp.in/jobs'
+    /* const apiurl = ' https://apis.ccbp.in/jobs' */
+    const token = Cookies.get('jwt_token')
 
     const options = {
       method: 'GET',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJhaHVsIiwicm9sZSI6IlBSSU1FX1VTRVIiLCJpYXQiOjE2MjMwNjU1MzJ9.D13s5wN3Oh59aa_qtXMo3Ec4wojOx0EZh8Xr5C5sRkU',
+        Authorization: `Bearer ${token}`,
       },
     }
 
@@ -240,52 +281,86 @@ class JobsPage extends Component {
     this.setState({showjobs: dataformat})
   }
 
+  // line 284:26//
+  profilesec = () => {
+    const {apiStatus} = this.state
+
+    if (apiStatus === apiStatusConstants.inProgress) {
+      return this.loaderview()
+    }
+    if (apiStatus === apiStatusConstants.success) {
+      const {profiledata} = this.state
+      const {imageUrl, name, shortBio} = profiledata
+      return (
+        <div className="profilecard">
+          <img src={imageUrl} alt="profile" />
+          <h1 className="profile-heading">{name}</h1>
+          <p>{shortBio}</p>
+        </div>
+      )
+    }
+    if (apiStatus === apiStatusConstants.failure) {
+      return this.failureview()
+    }
+    return undefined
+  }
+
+  // line304:33//
+  rightsideshowjobs = () => {
+    const {apiStatus} = this.state
+    if (apiStatus === apiStatusConstants.success) {
+      const {showjobs} = this.state
+      return (
+        <ul className="unorder">
+          {showjobs.map(eachjob => (
+            <ResultView key={eachjob.id} eachdetails={eachjob} />
+          ))}
+        </ul>
+      )
+    }
+    if (apiStatus === apiStatusConstants.inProgress) {
+      return this.loaderview()
+    }
+    if (apiStatus === apiStatusConstants.failure) {
+      return this.failureviewrightsidejobs()
+    }
+    return undefined
+  }
+
   render() {
     const {
-      profiledata,
+      /* profiledata, */
       showjobs,
       usersearchinput,
-      checkboxdata,
+      /* checkboxdata, */
       nojobs,
-      authorizeuser,
+      /* authorizeuser, */
     } = this.state
-    const {imageUrl, name, shortBio} = profiledata
-    console.log(checkboxdata)
-
+    /* const {imageUrl, name, shortBio} = profiledata */
+    console.log(showjobs)
     return (
       <div className="finaljob-container">
         <Header />
         <div className="sidebarmiddle-finalcontainer">
           <div className="sidebar-container">
-            {authorizeuser ? (
-              <>
-                <div className="searchelement-smalldevice">
-                  <input
-                    type="search"
-                    className="input-size"
-                    placeholder=" Search"
-                    value={usersearchinput}
-                    onChange={this.searchvalue}
-                  />
-                  <button
-                    type="button"
-                    data-testid="searchButton"
-                    className="searchbtn"
-                    onClick={this.takejobresults}
-                  >
-                    <BsSearch size={18} />
-                  </button>
-                </div>
-
-                <div className="profilecard">
-                  <img src={imageUrl} alt="profile" />
-                  <h1 className="profile-heading">{name}</h1>
-                  <p>{shortBio}</p>
-                </div>
-              </>
-            ) : (
-              <div>{this.failureview()}</div>
-            )}
+            <div className="searchelement-smalldevice">
+              <input
+                type="search"
+                className="input-size"
+                placeholder=" Search"
+                value={usersearchinput}
+                onChange={this.searchvalue}
+              />
+              <button
+                type="button"
+                data-testid="searchButton"
+                className="searchbtn"
+                onClick={this.takejobresults}
+              >
+                <BsSearch size={18} />
+              </button>
+            </div>
+            {this.profilesec()}
 
             <hr className="line" />
             <ul className="typeofEmployement-container">
@@ -316,11 +391,11 @@ class JobsPage extends Component {
                   <img
                     src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
                     className="nojobs-size"
-                    alt="no jobs"
+                    alt="failure view"
                   />
                   <h1 className="headingemploye">No Jobs guys</h1>
                   <p className="failure-para">
-                    We could not find any jobs.Try other filters.
+                    We could not find any jobs. Try other filters
                   </p>
                 </div>
               ) : (
@@ -351,25 +426,7 @@ class JobsPage extends Component {
                 <BsSearch size={18} />
               </button>
             </div>
-            {nojobs ? (
-              <div className="nojobs-container">
-                <img
-                  src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
-                  className="nojobs-size"
-                  alt="no jobs"
-                />
-                <h1 className="headingemploye">No Jobs Found</h1>
-                <p className="failure-para">
-                  We could not find any jobs.Try other filters.
-                </p>
-              </div>
-            ) : (
-              <ul className="unorder">
-                {showjobs.map(eachjob => (
-                  <ResultView key={eachjob.id} eachdetails={eachjob} />
-                ))}
-              </ul>
-            )}
+            {this.rightsideshowjobs()}
           </div>
         </div>
       </div>

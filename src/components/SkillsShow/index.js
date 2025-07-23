@@ -6,7 +6,7 @@ const SkillsShow = props => {
   const {name, imageUrl} = eachdetails
   return (
     <li className="list-skills">
-      <img src={imageUrl} className="image-size" />
+      <img src={imageUrl} className="image-size" alt="" />
       <p className="para-skills">{name}</p>
     </li>
   )

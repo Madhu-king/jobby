@@ -22,9 +22,9 @@ const ResultView = prop => {
   } = eachdetails
   // console.log(eachdetails.id)//
 
-  const showdetails = () => {
+  /* const showdetails = () => {
     console.log(eachdetails)
-  }
+  } */
 
   return (
     <Link to={`/jobdetails/${id}`}>
@@ -45,8 +45,8 @@ const ResultView = prop => {
         <div className="middle-section">
           <div className="locationarrange">
             <p className="para-location">
-              {' '}
-              <MdLocationOn size={20} /> {location}
+              <MdLocationOn size={20} />
+              {location}
             </p>
 
             <div className="locationarrange">

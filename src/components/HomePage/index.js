@@ -1,13 +1,8 @@
 import {Component} from 'react'
 
-import {Redirect, Link} from 'react-router-dom'
-import Cookies from 'js-cookie'
+import {Link} from 'react-router-dom'
 
 import Header from '../Header'
-
-import Jobspage from '../JobsPage'
-
-import LoginPage from '../LoginPage'
 
 import './index.css'
 

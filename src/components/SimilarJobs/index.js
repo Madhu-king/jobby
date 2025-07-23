@@ -17,7 +17,11 @@ const SimilarJobs = prop => {
   return (
     <li className="listsimilar">
       <div className="logo-section-SimilarJobs">
-        <img src={imageLogoUrl} className="logo-size" />
+        <img
+          src={imageLogoUrl}
+          className="logo-size"
+          alt="job details company logo"
+        />
         <div className="cont">
           <h1 className="SimilarJobs-heading">{title}</h1>
           <p className="t-color">

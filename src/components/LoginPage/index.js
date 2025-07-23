@@ -71,6 +71,7 @@ class LoginPage extends Component {
           <img
             src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
             className="logo"
+            alt=""
           />
           <div className="username-cont">
             <label className="para" htmlFor="username">
