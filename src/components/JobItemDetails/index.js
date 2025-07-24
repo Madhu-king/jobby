@@ -187,6 +187,7 @@ class JobItemDetails extends Component {
                   <IoLocationOutline size={25} className="color" />
                   {location}
                 </p>
+
                 <p className="internship">
                   <IoBag size={25} className="color" />
                   {employmentType}

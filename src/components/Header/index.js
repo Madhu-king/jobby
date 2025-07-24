@@ -14,15 +14,15 @@ const Header = props => {
 
   return (
     <nav className="nav-cont">
-      <li className="list-logo">
-        <Link to="/">
+      <Link to="/">
+        <li className="list-logo">
           <img
             src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
             className="logo-size"
             alt="website logo"
           />
-        </Link>
-      </li>
+        </li>
+      </Link>
 
       <ul className="name-link">
         <li className="list">

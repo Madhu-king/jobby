@@ -72,6 +72,7 @@ class Jobs extends Component {
   state = {
     apiStatus: apiStatusConstants.initial,
     apiStatusfirst: apiStatusConstantstwo.firstinitial,
+
     profiledata: {},
     /* authorizeuser: false, */
     usersearchinput: '',
@@ -86,12 +87,16 @@ class Jobs extends Component {
     this.takejobresults()
   }
 
+  againreq = () => {
+    this.getprofile()
+  }
+
   failureview = () => (
-    <div>
-      <button type="button" className="Retrybtn">
+    <>
+      <button type="button" className="retrybtn" onClick={this.againreq}>
         Retry
       </button>
-    </div>
+    </>
   )
 
   failureviewrightsidejobs = () => (
@@ -237,8 +242,8 @@ class Jobs extends Component {
       }
 
       //  console.log(formatdata)//
-    } else {
-      // this.setState({apiStatusfirst:apiStatusConstantstwo.firstinProgress})//
+    } else if (usersearchinput !== undefined) {
+      this.setState({apiStatusfirst: apiStatusConstantstwo.firstinProgress}) //
 
       const options = {
         method: 'GET',
@@ -251,20 +256,20 @@ class Jobs extends Component {
         `https://apis.ccbp.in/jobs?search=${usersearchinput}`,
         options,
       )
-      if (response.ok) {
-        const out = await response.json()
+      // if (response.ok) {//
+      const out = await response.json()
+      console.log(out.total)
+      if (out.total !== 0) {
         const dataformat = out.jobs.map(eachjob => this.singlr(eachjob))
         this.setState({
           showjobs: dataformat,
           apiStatusfirst: apiStatusConstantstwo.firstsuccess,
         })
-      } else {
+      } else if (out.total === 0) {
         this.setState({apiStatusfirst: apiStatusConstantstwo.firstfailure})
 
         // this.rightsideshowjobs()//
       }
-
-      // console.log(out)//
     }
   }
 

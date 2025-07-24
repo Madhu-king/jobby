@@ -82,7 +82,7 @@ class Login extends Component {
               id="username"
               className="input-box"
               value={username}
-              placeholder=" Username"
+              placeholder="Username"
               onChange={this.username}
             />
           </div>

@@ -27,12 +27,12 @@ const ResultView = prop => {
   } */
 
   return (
-    <Link to={`/jobdetails/${id}`}>
+    <Link to={`/jobs/${id}`}>
       <li className="results-container">
         <div className="align">
           <img src={imgUrl} className="logo-size" alt="website logo" />
           <div className="cont">
-            <h1 className="para">{title}</h1>
+            <p className="para">{title}</p>
             <div className="para-rating">
               <p>
                 <FaStar color="yellow" />

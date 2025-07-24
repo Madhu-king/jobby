@@ -1,5 +1,7 @@
 import {Component} from 'react'
 
+import Cookies from 'js-cookie'
+
 import {Link} from 'react-router-dom'
 
 import Header from '../Header'
@@ -16,7 +18,11 @@ class Home extends Component {
 
   Jobspage = () => {
     const {history} = this.props
-    history.replace('/jobs')
+    const token = Cookies.get('jwt_token')
+    if (token !== undefined) {
+      history.replace('/jobs')
+    }
+    return undefined
   }
 
   render() {
