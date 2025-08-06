@@ -99,6 +99,18 @@ class Jobs extends Component {
     </>
   )
 
+  reqjobsright = () => {
+    this.takejobresults()
+  }
+
+  jobsretryfailureview = () => (
+    <>
+      <button type="button" className="retrybtn" onClick={this.reqjobsright}>
+        Retry
+      </button>
+    </>
+  )
+
   failureviewrightsidejobs = () => (
     <div className="nojobs-container">
       <img
@@ -123,7 +135,7 @@ class Jobs extends Component {
     this.setState({apiStatus: apiStatusConstants.inProgress})
 
     const gettokenfromcookies = Cookies.get('jwt_token')
-    /* if (gettokenfromcookies !== undefined) { */
+    // if (gettokenfromcookies !== undefined) { //
     const apiurl = 'https://apis.ccbp.in/profile'
     const options = {
       method: 'GET',
@@ -133,8 +145,11 @@ class Jobs extends Component {
     }
 
     const response = await fetch(apiurl, options)
+
     if (response.ok) {
       const resultprofiledata = await response.json()
+      // console.log(resultprofiledata)//
+
       const c = this.sendformat(resultprofiledata.profile_details)
       // console.log(c)//
       // this.takejobresults()//
@@ -168,10 +183,12 @@ class Jobs extends Component {
 
   checkboxdata = async data => {
     // this.setState({value: data})//
+
     // console.log(data)//
     this.setState({nojobs: false})
 
     const {usersearchinput} = this.state
+
     const token = Cookies.get('jwt_token')
 
     const options = {
@@ -186,7 +203,7 @@ class Jobs extends Component {
       options,
     )
     const out = await response.json()
-    console.log(out)
+    // console.log(out)//
     if (out.total === 0) {
       this.setState({nojobs: true})
     } else {
@@ -194,7 +211,6 @@ class Jobs extends Component {
       console.log(out)
       this.setState({showjobs: dataformat, checkboxdata: data})
       // this.setState({checkboxdata: data})//
-
       // this.setState({checkboxvalues: data})//
       // console.log(salaryvalue)//
     }
@@ -226,8 +242,10 @@ class Jobs extends Component {
       }
 
       const response = await fetch(apiurl, options)
+      // console.log(response)//
       if (response.ok) {
         const searchingresults = await response.json()
+        // console.log(searchingresults)//
         // console.log(searchingresults)//
         const formatdata = searchingresults.jobs.map(eachjob =>
           this.singlr(eachjob),
@@ -242,7 +260,7 @@ class Jobs extends Component {
       }
 
       //  console.log(formatdata)//
-    } else if (usersearchinput !== undefined) {
+    } else if (usersearchinput !== '') {
       this.setState({apiStatusfirst: apiStatusConstantstwo.firstinProgress}) //
 
       const options = {
@@ -256,9 +274,10 @@ class Jobs extends Component {
         `https://apis.ccbp.in/jobs?search=${usersearchinput}`,
         options,
       )
+
       // if (response.ok) {//
       const out = await response.json()
-      console.log(out.total)
+      // console.log(out.total)//
       if (out.total !== 0) {
         const dataformat = out.jobs.map(eachjob => this.singlr(eachjob))
         this.setState({
@@ -332,7 +351,8 @@ class Jobs extends Component {
 
   // line304:33//
   rightsideshowjobs = () => {
-    const {apiStatusfirst} = this.state
+    const {apiStatusfirst, usersearchinput} = this.state
+    // console.log(usersearchinput)//
     if (apiStatusfirst === apiStatusConstantstwo.firstsuccess) {
       const {showjobs} = this.state
       return (
@@ -347,7 +367,14 @@ class Jobs extends Component {
       return this.loaderview()
     }
     if (apiStatusfirst === apiStatusConstantstwo.firstfailure) {
-      return this.failureviewrightsidejobs()
+      // return this.jobsretryfailureview()//
+
+      if (usersearchinput === '') {
+        return this.jobsretryfailureview()
+      }
+      if (usersearchinput !== '') {
+        return this.failureviewrightsidejobs()
+      }
     }
     return undefined
   }
@@ -388,8 +415,8 @@ class Jobs extends Component {
             {this.profilesec()}
 
             <hr className="line" />
+            <h1 className="headingemploye">Type of Employment</h1>
             <ul className="typeofEmployement-container">
-              <h1 className="headingemploye">Type of Employement</h1>
               {employmentTypesList.map(each => (
                 <EmployeeDetail
                   key={each.employmentTypeId}

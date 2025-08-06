@@ -30,9 +30,10 @@ const ResultView = prop => {
     <Link to={`/jobs/${id}`}>
       <li className="results-container">
         <div className="align">
-          <img src={imgUrl} className="logo-size" alt="website logo" />
+          <img src={imgUrl} className="logo-size" alt="company logo" />
+
           <div className="cont">
-            <p className="para">{title}</p>
+            <h1 className="para">{title}</h1>
             <div className="para-rating">
               <p>
                 <FaStar color="yellow" />

@@ -1,5 +1,7 @@
 import {Component} from 'react'
 
+import Loader from 'react-loader-spinner'
+
 import {IoLocationOutline, IoBag} from 'react-icons/io5'
 
 import {FaStar} from 'react-icons/fa'
@@ -14,12 +16,12 @@ import SimilarJobs from '../SimilarJobs'
 
 import './index.css'
 
-/* const apiStatusConstants = {
+const apiStatusConstants = {
   initial: 'INITIAL',
   success: 'SUCCESS',
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
-} */
+}
 
 class JobItemDetails extends Component {
   state = {
@@ -27,7 +29,8 @@ class JobItemDetails extends Component {
     skills: [],
     companylifedetails: {},
     similarjobs: [],
-    detailsview: true,
+    /* detailsview: true, */
+    apistatus: apiStatusConstants.initial,
   }
 
   componentDidMount() {
@@ -94,6 +97,7 @@ class JobItemDetails extends Component {
     const {params} = match
     const {id} = params
     console.log(id)
+    this.setState({apistatus: apiStatusConstants.inProgress})
     const token = Cookies.get('jwt_token')
     const apiurl = `https://apis.ccbp.in/jobs/${id}`
 
@@ -105,10 +109,11 @@ class JobItemDetails extends Component {
     }
 
     const response = await fetch(apiurl, options)
-    console.log(response)
+    // console.log(response)//
     if (response.ok) {
       const resultdetails = await response.json()
       // console.log(resultdetails.job_details)//
+      console.log(resultdetails)
 
       // console.log(resultdetails.similar_jobs)//
       const c = resultdetails.job_details
@@ -129,28 +134,31 @@ class JobItemDetails extends Component {
         skills: d,
         companylifedetails: lifecomapnyformatted,
         similarjobs: similarjobsFormatted,
-        detailsview: true,
+        /* detailsview: true, */
+        apistatus: apiStatusConstants.success,
       })
     } else {
-      this.setState({detailsview: false})
+      this.setState({
+        /* detailsview: false, */
+        apistatus: apiStatusConstants.failure,
+      })
       /* const {history} = this.props
       Cookies.remove('jwt_token')
       history.replace('/login') */
     }
   }
 
-  render() {
-    const {
-      jobdetails,
-      skills,
-      companylifedetails,
-      similarjobs,
-      detailsview,
-    } = this.state
-    console.log(jobdetails)
+  viewloader = () => (
+    <div className="loader-container" data-testid="loader">
+      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
+    </div>
+  )
+
+  dirender = () => {
+    const {jobdetails, skills, companylifedetails, similarjobs} = this.state
+    // console.log(jobdetails)//
     const {description, imageUrl} = companylifedetails
     const {
-      id,
       companyLogUrl,
       title,
       rating,
@@ -163,83 +171,94 @@ class JobItemDetails extends Component {
     return (
       <div className="jobsdetails-container">
         <Header />
-        {detailsview ? (
-          <div className="container-align">
-            <div className="jobcontainer" key={id}>
-              <div className="logo-section">
-                <img
-                  src={companyLogUrl}
-                  alt=" job details company logo"
-                  className="size-logo"
-                />
 
-                <div>
-                  <h1 className="heading-color">{title}</h1>
-                  <p className="heading-color">
-                    <FaStar color="yellow" />
-                    {rating}
-                  </p>
-                </div>
-              </div>
+        <div className="container-align">
+          <div className="jobcontainer">
+            <div className="logo-section">
+              <img
+                src={companyLogUrl}
+                alt="job details company logo"
+                className="size-logo"
+              />
 
-              <div className="location-section">
-                <p className="location-color">
-                  <IoLocationOutline size={25} className="color" />
-                  {location}
+              <div>
+                <h1 className="heading-color">{title}</h1>
+                <p className="heading-color">
+                  <FaStar color="yellow" />
+                  {rating}
                 </p>
-
-                <p className="internship">
-                  <IoBag size={25} className="color" />
-                  {employmentType}
-                </p>
-
-                <p className="package">{packageSalary}</p>
-              </div>
-              <hr className="line-job" />
-              <div className="des-section">
-                <div className="des-align">
-                  <h1 className="package">Description</h1>
-                  <a href={companyWebsiteUrl} className="visitlink">
-                    Visit
-                  </a>
-                </div>
-
-                <p className="package">{jobDescription}</p>
-              </div>
-              <div className="skill-section">
-                <h1 className="skills-head">Skills </h1>
-                <ul className="skill-unorder-container">
-                  {skills.map(each => (
-                    <SkillsShow key={each.id} eachdetails={each} />
-                  ))}
-                </ul>
-              </div>
-              <div className="life-atcompany">
-                <h1 className="skills-head">Life at Company</h1>
-                <div className="arrangecompany">
-                  <p className="life-para">{description}</p>
-                  <img
-                    src={imageUrl}
-                    className="companyimagesize"
-                    alt="life at company"
-                  />
-                </div>
-              </div>
-              <div className="similarjobs-container">
-                <h1 className="skills-head">Similar Jobs</h1>
-                <ul className="unorder-similar">
-                  {similarjobs.map(each => (
-                    <SimilarJobs key={each.id} detailssimilar={each} />
-                  ))}
-                </ul>
               </div>
             </div>
+
+            <div className="location-section">
+              <p className="location-color">
+                <IoLocationOutline size={25} className="color" />
+                {location}
+              </p>
+
+              <p className="internship">
+                <IoBag size={25} className="color" />
+                {employmentType}
+              </p>
+
+              <p className="package">{packageSalary}</p>
+            </div>
+            <hr className="line-job" />
+            <div className="des-section">
+              <div className="des-align">
+                <h1 className="package">Description</h1>
+                <a href={companyWebsiteUrl} className="visitlink">
+                  Visit
+                </a>
+              </div>
+
+              <p className="package">{jobDescription}</p>
+            </div>
+            <div className="skill-section">
+              <h1 className="skills-head">Skills </h1>
+              <ul className="skill-unorder-container">
+                {skills.map(each => (
+                  <SkillsShow key={each.name} eachdetails={each} />
+                ))}
+              </ul>
+            </div>
+            <div className="life-atcompany">
+              <h1 className="skills-head">Life at Company</h1>
+              <div className="arrangecompany">
+                <p className="life-para">{description}</p>
+                <img
+                  src={imageUrl}
+                  className="companyimagesize"
+                  alt="life at company"
+                />
+              </div>
+            </div>
+            <h1 className="skills-head">Similar Jobs</h1>
+            <div className="similarjobs-container">
+              <ul className="unorder-similar">
+                {similarjobs.map(each => (
+                  <SimilarJobs key={each.id} detailssimilar={each} />
+                ))}
+              </ul>
+            </div>
           </div>
-        ) : (
-          <div>{this.failureview()}</div>
-        )}
+        </div>
       </div>
     )
+  }
+
+  render() {
+    const {apistatus} = this.state
+    switch (apistatus) {
+      case apiStatusConstants.success:
+        return this.dirender()
+      case apiStatusConstants.failure:
+        return this.failureview()
+      case apiStatusConstants.inProgress:
+        return this.viewloader()
+      default:
+        return null
+    }
   }
 }
 
