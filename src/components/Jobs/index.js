@@ -61,17 +61,24 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
+/* const apiconstrains = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  progress: 'IN_PROGRESS',
+} */
+
 const apiStatusConstantstwo = {
-  firstinitial: 'INITIAL',
-  firstsuccess: 'SUCCESS',
-  firstfailure: 'FAILURE',
-  firstinProgress: 'IN_PROGRESS',
+  firstinitial: 'initial',
+  firstsuccess: 'success',
+  firstfailure: 'failure',
+  firstinProgress: 'in_progress',
 }
 
 class Jobs extends Component {
   state = {
     apiStatus: apiStatusConstants.initial,
-    apiStatusfirst: apiStatusConstantstwo.firstinitial,
+    status: apiStatusConstantstwo.firstinitial,
 
     profiledata: {},
     /* authorizeuser: false, */
@@ -185,7 +192,11 @@ class Jobs extends Component {
     // this.setState({value: data})//
 
     // console.log(data)//
-    this.setState({nojobs: false})
+    const {status} = this.state
+    this.setState({
+      nojobs: false,
+      status: apiStatusConstantstwo.firstinProgress,
+    })
 
     const {usersearchinput} = this.state
 
@@ -205,11 +216,15 @@ class Jobs extends Component {
     const out = await response.json()
     // console.log(out)//
     if (out.total === 0) {
-      this.setState({nojobs: true})
+      this.setState({nojobs: true, status: apiStatusConstantstwo.firstfailure})
     } else {
       const dataformat = out.jobs.map(eachjob => this.singlr(eachjob))
       console.log(out)
-      this.setState({showjobs: dataformat, checkboxdata: data})
+      this.setState({
+        showjobs: dataformat,
+        checkboxdata: data,
+        status: apiStatusConstantstwo.firstsuccess,
+      })
       // this.setState({checkboxdata: data})//
       // this.setState({checkboxvalues: data})//
       // console.log(salaryvalue)//
@@ -229,7 +244,7 @@ class Jobs extends Component {
 
   takejobresults = async () => {
     const {usersearchinput} = this.state
-    this.setState({apiStatusfirst: apiStatusConstantstwo.firstinProgress})
+    this.setState({status: apiStatusConstantstwo.firstinProgress})
     const token = Cookies.get('jwt_token')
     if (usersearchinput === '') {
       const apiurl = ' https://apis.ccbp.in/jobs'
@@ -253,15 +268,15 @@ class Jobs extends Component {
 
         this.setState({
           showjobs: formatdata,
-          apiStatusfirst: apiStatusConstantstwo.firstsuccess,
+          status: apiStatusConstantstwo.firstsuccess,
         })
       } else {
-        this.setState({apiStatusfirst: apiStatusConstantstwo.firstfailure})
+        this.setState({status: apiStatusConstantstwo.firstfailure})
       }
 
       //  console.log(formatdata)//
     } else if (usersearchinput !== '') {
-      this.setState({apiStatusfirst: apiStatusConstantstwo.firstinProgress}) //
+      this.setState({status: apiStatusConstantstwo.firstinProgress}) //
 
       const options = {
         method: 'GET',
@@ -282,10 +297,10 @@ class Jobs extends Component {
         const dataformat = out.jobs.map(eachjob => this.singlr(eachjob))
         this.setState({
           showjobs: dataformat,
-          apiStatusfirst: apiStatusConstantstwo.firstsuccess,
+          status: apiStatusConstantstwo.firstsuccess,
         })
       } else if (out.total === 0) {
-        this.setState({apiStatusfirst: apiStatusConstantstwo.firstfailure})
+        this.setState({status: apiStatusConstantstwo.firstfailure})
 
         // this.rightsideshowjobs()//
       }
@@ -298,8 +313,11 @@ class Jobs extends Component {
 
   getradiodata = async salaryRangeId => {
     // console.log(salaryRangeId)//
-    const {usersearchinput, checkboxdata} = this.state
-    this.setState({nojobs: false})
+    const {usersearchinput, checkboxdata, status} = this.state
+    this.setState({
+      nojobs: false,
+      status: apiStatusConstantstwo.firstinProgress,
+    })
 
     // this.takejobresults()//
     /* const apiurl = ' https://apis.ccbp.in/jobs' */
@@ -318,11 +336,14 @@ class Jobs extends Component {
     )
     const out = await response.json()
     if (out.total === 0) {
-      this.setState({nojobs: true})
+      this.setState({nojobs: true, status: apiStatusConstantstwo.firstfailure})
     }
     const dataformat = out.jobs.map(eachjob => this.singlr(eachjob))
     // console.log(out)//
-    this.setState({showjobs: dataformat})
+    this.setState({
+      showjobs: dataformat,
+      status: apiStatusConstantstwo.firstsuccess,
+    })
   }
 
   // line 284:26//
@@ -351,9 +372,9 @@ class Jobs extends Component {
 
   // line304:33//
   rightsideshowjobs = () => {
-    const {apiStatusfirst, usersearchinput} = this.state
+    const {status, usersearchinput} = this.state
     // console.log(usersearchinput)//
-    if (apiStatusfirst === apiStatusConstantstwo.firstsuccess) {
+    if (status === apiStatusConstantstwo.firstsuccess) {
       const {showjobs} = this.state
       return (
         <ul className="unorder">
@@ -363,10 +384,10 @@ class Jobs extends Component {
         </ul>
       )
     }
-    if (apiStatusfirst === apiStatusConstantstwo.firstinProgress) {
+    if (status === apiStatusConstantstwo.firstinProgress) {
       return this.loaderview()
     }
-    if (apiStatusfirst === apiStatusConstantstwo.firstfailure) {
+    if (status === apiStatusConstantstwo.firstfailure) {
       // return this.jobsretryfailureview()//
 
       if (usersearchinput === '') {
