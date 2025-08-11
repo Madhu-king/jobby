@@ -155,7 +155,6 @@ class Jobs extends Component {
 
     if (response.ok) {
       const resultprofiledata = await response.json()
-      // console.log(resultprofiledata)//
 
       const c = this.sendformat(resultprofiledata.profile_details)
       // console.log(c)//
