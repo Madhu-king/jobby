@@ -157,7 +157,7 @@ class Jobs extends Component {
       const resultprofiledata = await response.json()
 
       const c = this.sendformat(resultprofiledata.profile_details)
-      // console.log(c)//
+
       // this.takejobresults()//
       this.setState({
         profiledata: c,
