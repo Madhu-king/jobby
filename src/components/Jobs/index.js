@@ -112,9 +112,19 @@ class Jobs extends Component {
 
   jobsretryfailureview = () => (
     <>
-      <button type="button" className="retrybtn" onClick={this.reqjobsright}>
-        Retry
-      </button>
+      <div>
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
+          alt="failure view"
+        />
+        <h1 className="failureheadingjobs">Oops! Something Went Wrong</h1>
+        <p className="failure-para">
+          We cannot seem to find the page you are looking for
+        </p>
+        <button type="button" className="retrybtn" onClick={this.reqjobsright}>
+          Retry
+        </button>
+      </div>
     </>
   )
 
@@ -191,7 +201,7 @@ class Jobs extends Component {
     // this.setState({value: data})//
 
     // console.log(data)//
-    const {status} = this.state
+    // const {status} = this.state//
     this.setState({
       nojobs: false,
       status: apiStatusConstantstwo.firstinProgress,

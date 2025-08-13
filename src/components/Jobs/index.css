@@ -123,6 +123,10 @@
 .failure-para {
   color: white;
 }
+.failureheadingjobs{
+  color: white;
+  
+}
 
 @media screen and (max-width: 576px) {
   .sidebarmiddle-finalcontainer {
