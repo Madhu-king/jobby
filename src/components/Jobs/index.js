@@ -423,12 +423,13 @@ class Jobs extends Component {
     return (
       <div className="finaljob-container">
         <Header />
+
         <div className="sidebarmiddle-finalcontainer">
           <div className="sidebar-container">
-            <div className="searchelement-smalldevice">
+            <div className="searchsmalldevices">
               <input
                 type="search"
-                className="input-size"
+                className="input-size-smalldevices-searchbar"
                 placeholder=" Search"
                 value={usersearchinput}
                 onChange={this.searchvalue}
@@ -467,27 +468,6 @@ class Jobs extends Component {
                 />
               ))}
             </ul>
-            <div className="jobscontainer-smalldevice">
-              {nojobs ? (
-                <div className="nojobs-container">
-                  <img
-                    src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
-                    className="nojobs-size"
-                    alt="failure view"
-                  />
-                  <h1 className="headingemploye">No Jobs guys</h1>
-                  <p className="failure-para">
-                    We could not find any jobs. Try other filters
-                  </p>
-                </div>
-              ) : (
-                <ul className="unorder">
-                  {showjobs.map(eachjob => (
-                    <ResultView key={eachjob.id} eachdetails={eachjob} />
-                  ))}
-                </ul>
-              )}
-            </div>
           </div>
 
           <div className="rightside-container">
@@ -508,7 +488,7 @@ class Jobs extends Component {
                 <BsSearch size={18} />
               </button>
             </div>
-            {this.rightsideshowjobs()}
+            <div>{this.rightsideshowjobs()}</div>
           </div>
         </div>
       </div>

@@ -123,9 +123,18 @@
 .failure-para {
   color: white;
 }
-.failureheadingjobs{
+.failureheadingjobs {
   color: white;
-  
+}
+.input-size-smalldevices-searchbar {
+  height: 40px;
+  width: 180px;
+  border: 1px solid gray;
+
+  background-color: transparent;
+  margin: 10px;
+  color: white;
+  border-radius: 20px;
 }
 
 @media screen and (max-width: 576px) {
@@ -143,14 +152,15 @@
   .searchelement {
     display: none;
   }
-  .searchelement-smalldevice {
+  /* .searchelement-smalldevice {
     height: 50px;
     width: 300px;
     border: 1px solid white;
     background-color: transparent;
     margin-top: 30px;
     color: white;
-  }
+  }*/
+
   .input-size {
     height: 30px;
     width: 200px;
@@ -182,6 +192,10 @@
   .rightside-container {
     display: none;
   }
+  .joblistsmalldevices {
+    display: flex;
+  }
+ 
   .nojobs-size {
     height: 300px;
     width: 200px;
@@ -190,10 +204,20 @@
 }
 
 @media screen and (min-width: 768px) {
-  .searchelement-smalldevice {
+  /* .searchelement-smalldevice {
     display: none;
   }
   .jobscontainer-smalldevice {
     display: none;
+  }*/
+  .searchelement {
+    display: flex;
   }
+  .searchsmalldevices {
+    display: none;
+  }
+  .joblistsmalldevices {
+    display: none;
+  }
+ 
 }
