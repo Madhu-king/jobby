@@ -195,7 +195,7 @@
   .joblistsmalldevices {
     display: flex;
   }
- 
+
   .nojobs-size {
     height: 300px;
     width: 200px;
@@ -219,5 +219,4 @@
   .joblistsmalldevices {
     display: none;
   }
- 
 }
