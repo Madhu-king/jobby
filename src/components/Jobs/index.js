@@ -385,7 +385,6 @@ class Jobs extends Component {
   rightsideshowjobs = () => {
     const {status, usersearchinput} = this.state
 
-    // console.log(usersearchinput)//
     if (status === apiStatusConstantstwo.firstsuccess) {
       const {showjobs} = this.state
       return (
@@ -424,7 +423,7 @@ class Jobs extends Component {
       checkboxvalues,
     } = this.state
     /* const {imageUrl, name, shortBio} = profiledata */
-    // console.log(showjobs)//
+
     console.log(checkboxvalues)
     return (
       <div className="finaljob-container">
