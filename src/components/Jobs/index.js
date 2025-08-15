@@ -256,7 +256,8 @@ class Jobs extends Component {
     this.setState({status: apiStatusConstantstwo.firstinProgress})
     const token = Cookies.get('jwt_token')
     if (usersearchinput === '') {
-      const apiurl = ' https://apis.ccbp.in/jobs'
+      const apiurl =
+        ' https://apis.ccbp.in/jobs?employment_type=&minimum_package=&search='
 
       const options = {
         method: 'GET',
@@ -269,8 +270,9 @@ class Jobs extends Component {
       // console.log(response)//
       if (response.ok) {
         const searchingresults = await response.json()
+        // console.log(searchingresults.length)//
         // console.log(searchingresults)//
-        // console.log(searchingresults)//
+
         const formatdata = searchingresults.jobs.map(eachjob =>
           this.singlr(eachjob),
         )
@@ -382,6 +384,7 @@ class Jobs extends Component {
   // line304:33//
   rightsideshowjobs = () => {
     const {status, usersearchinput} = this.state
+
     // console.log(usersearchinput)//
     if (status === apiStatusConstantstwo.firstsuccess) {
       const {showjobs} = this.state
@@ -402,6 +405,7 @@ class Jobs extends Component {
       if (usersearchinput === '') {
         return this.jobsretryfailureview()
       }
+
       if (usersearchinput !== '') {
         return this.failureviewrightsidejobs()
       }
@@ -417,9 +421,11 @@ class Jobs extends Component {
       /* checkboxdata, */
       nojobs,
       /* authorizeuser, */
+      checkboxvalues,
     } = this.state
     /* const {imageUrl, name, shortBio} = profiledata */
-    console.log(showjobs)
+    // console.log(showjobs)//
+    console.log(checkboxvalues)
     return (
       <div className="finaljob-container">
         <Header />

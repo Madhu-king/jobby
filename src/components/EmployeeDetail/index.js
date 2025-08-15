@@ -5,6 +5,7 @@ const EmployeeDetail = props => {
   const {label, employmentTypeId} = details
 
   const sendingcheckboxdetail = () => {
+    // console.log(employmentTypeId)//
     checkboxdata(employmentTypeId)
   }
 
